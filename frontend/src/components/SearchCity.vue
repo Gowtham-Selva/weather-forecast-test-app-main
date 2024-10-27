@@ -15,6 +15,9 @@
       :click="true"
       @click="handleMapClick"
     >
+    <GMapMarker
+      :position="selectedPlace"
+    />
     </GMapMap>
   </div>
 </template>
