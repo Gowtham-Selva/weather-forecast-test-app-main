@@ -12,7 +12,12 @@
       :zoom="7"
       map-type-id="roadmap"
       ref="gmap"
+      :click="true"
+      @click="handleMapClick"
     >
+    <GMapMarker
+      :position="selectedPlace"
+    />
     </GMapMap>
   </div>
 </template>
@@ -20,7 +25,7 @@
 <script lang="ts" src="./search-city.component.ts"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 .gmap-class {
   height: 500px;
   width: 100%;

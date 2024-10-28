@@ -1,3 +1,4 @@
+import axios from "axios";
 
 export interface ForecastModel {
     latitude: number,
@@ -15,20 +16,28 @@ export interface ForecastModel {
 
 export async function getWeatherForecast(lat: number, lng: number): Promise<ForecastModel> {
 
-    // TODO: make a call to this API with latitude and longitude from the frontend
-    // use axios to make the call
-    //  https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true
+    try {
+        const { data }  = await axios.get('https://api.open-meteo.com/v1/forecast', {
+            params: {
+                latitude: lat,
+                longitude: lng,
+                current_weather: true,
+            },
+        });
+        return {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            elevation: data.elevation,
+            current_weather: {
+                temperature: data.current_weather.temperature,
+                windspeed: data.current_weather.windspeed,
+                winddirection: data.current_weather.winddirection,
+                weathercode: data.current_weather.weathercode,
+                time: new Date(data.current_weather.time),
+            },
+        };
 
-    return {
-        latitude: 52.52,
-        longitude: 13.41,
-        elevation: 0,
-        current_weather: {
-            temperature: 10,
-            windspeed: 10,
-            winddirection: 10,
-            weathercode: 10,
-            time: new Date()
-        }
-    };
+    } catch(error: any) {
+        throw new Error(`Failed to fetch weather data: ${error.message}`);
+    }
 }
