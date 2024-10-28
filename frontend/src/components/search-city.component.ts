@@ -31,4 +31,16 @@ export default class SearchCity extends Vue {
     };
     this.updateSelectedPlace(newPlace);
   }
+
+  getCurrentLocation(position: any) {
+    let lat=position.coords.latitude;
+    let lng=position.coords.longitude;
+    this.updateSelectedPlace({lat,lng});
+  }
+
+  mounted() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.getCurrentLocation);
+    }
+  }
 }

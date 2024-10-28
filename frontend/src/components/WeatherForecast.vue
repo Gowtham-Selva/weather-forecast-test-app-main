@@ -4,7 +4,7 @@
 
     <div v-if="weatherInfo">
       <p>Temperature: {{ weatherInfo.current_weather.temperature }} °C</p>
-      <p>Condition: {{ weatherInfo.current_weather.windspeed }}</p>
+      <p>Wind Speed: {{ weatherInfo.current_weather.windspeed }}</p>
     </div>    
   </div>
 </template>
