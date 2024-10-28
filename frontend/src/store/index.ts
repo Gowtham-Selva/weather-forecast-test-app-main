@@ -12,6 +12,7 @@ export interface RootState {
 export default createStore({
   state: {
     selectedPlace: null as ILocation | null,
+    loading: false
   },
   getters: {
   },
@@ -19,6 +20,9 @@ export default createStore({
     setSelectedPlace(state, place: ILocation) {
       state.selectedPlace = place;
     },
+    setLoading(state, payload: boolean) {
+      state.loading = payload
+    }
   },
   actions: {
     updateSelectedPlace({ commit }, place: ILocation) {

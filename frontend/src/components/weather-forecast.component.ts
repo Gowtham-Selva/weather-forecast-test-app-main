@@ -2,13 +2,16 @@ import WeatherService, { ForecastModel } from '@/services/weather-service.servic
 import { ILocation } from '@/store';
 import { Options, Vue } from 'vue-class-component';
 import { Inject } from 'vue-property-decorator';
-import { mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 @Options({
   props: {
   },
+  methods: {
+    ...mapMutations(["setLoading"])
+  },
   computed: { 
-    ...mapState(["selectedPlace"])
+    ...mapState(["selectedPlace", "loading"])
   },
   watch: {
     selectedPlace(place: ILocation) {
@@ -21,17 +24,22 @@ export default class WeatherForecast extends Vue {
   @Inject('weatherService')
   public weatherService!: WeatherService;
 
+  loading!: boolean;
   selectedPlace!: ILocation[]
+  setLoading!: (payload: boolean) => Promise<void>
   errorMessage: string = '';
   weatherInfo = null as ForecastModel | null;
 
   async fetchWeatherForecast(lat: number, lng: number) {
     try {
       this.errorMessage = '';
+      this.setLoading(true);
       this.weatherInfo = await this.weatherService.getWeatherForecast(lat, lng);
     } catch (error) {
       this.errorMessage = 'Failed to load weather data. Please try again later.';
       this.weatherInfo = null;
+    } finally {
+      this.setLoading(false);
     }
   }
    
